@@ -6,7 +6,7 @@ import (
 )
 
 func InitConfig(cfg interface{}) error {
-	err := cleanenv.ReadConfig("config.yml", &cfg)
+	err := cleanenv.ReadConfig("config.yml", cfg)
 	if err != nil {
 		fmt.Printf("error load config : %s", err.Error())
 		return err
