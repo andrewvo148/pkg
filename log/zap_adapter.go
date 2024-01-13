@@ -22,13 +22,13 @@ const (
 	PANIC Level = "PANIC"
 )
 
-func toZapCoreLevel(level string) zapcore.Level {
+func toZapCoreLevel(level Level) zapcore.Level {
 	switch level {
-	case "debug":
+	case DEBUG:
 		return zapcore.DebugLevel
-	case "info":
+	case INFO:
 		return zapcore.InfoLevel
-	case "warn":
+	case WARN:
 		return zapcore.WarnLevel
 	default:
 		return zapcore.InfoLevel
@@ -37,7 +37,7 @@ func toZapCoreLevel(level string) zapcore.Level {
 func InitZapLogger(cfg ConfigLog) *zap.Logger {
 	if cfg.Environment == "development" {
 		stdout := zapcore.AddSync(os.Stdout)
-		level := zap.NewAtomicLevelAt(toZapCoreLevel(cfg.Level))
+		level := zap.NewAtomicLevelAt(toZapCoreLevel(Level(cfg.Level)))
 		developmentCfg := zap.NewDevelopmentEncoderConfig()
 		developmentCfg.EncodeLevel = zapcore.CapitalColorLevelEncoder
 		consoleEncoder := zapcore.NewConsoleEncoder(developmentCfg)
@@ -45,7 +45,7 @@ func InitZapLogger(cfg ConfigLog) *zap.Logger {
 		return zap.New(core)
 	} else { // for production
 		stdout := zapcore.AddSync(os.Stdout)
-		level := zap.NewAtomicLevelAt(toZapCoreLevel(cfg.Level))
+		level := zap.NewAtomicLevelAt(toZapCoreLevel(Level(cfg.Level)))
 		productionCfg := zap.NewProductionEncoderConfig()
 		productionCfg.TimeKey = "timestamp"
 		productionCfg.EncodeTime = zapcore.ISO8601TimeEncoder
