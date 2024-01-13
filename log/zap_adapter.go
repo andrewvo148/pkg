@@ -8,6 +8,8 @@ import (
 
 type Level string
 
+const DEVELOPMENT = "development"
+
 type ConfigLog struct {
 	Environment string
 	Level       string
@@ -35,7 +37,7 @@ func toZapCoreLevel(level Level) zapcore.Level {
 	}
 }
 func InitZapLogger(cfg ConfigLog) *zap.Logger {
-	if cfg.Environment == "development" {
+	if cfg.Environment == DEVELOPMENT {
 		stdout := zapcore.AddSync(os.Stdout)
 		level := zap.NewAtomicLevelAt(toZapCoreLevel(Level(cfg.Level)))
 		developmentCfg := zap.NewDevelopmentEncoderConfig()
