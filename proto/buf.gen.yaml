@@ -1,0 +1,24 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/andrewvo148/pkg/gen
+    except:
+      - buf.build/googleapis/googleapis
+plugins:
+  - plugin: buf.build/grpc-ecosystem/gateway:v2.19.0
+    out: gen
+    opt:
+      - paths=source_relative
+  - plugin: buf.build/protocolbuffers/go
+    out: gen
+    opt: paths=source_relative
+  - plugin: buf.build/grpc/go:v1.3.0
+    out: gen
+    opt: paths=source_relative
+  - plugin: buf.build/bufbuild/validate-go:v1.0.4
+    out: gen
+    opt:
+      - paths=source_relative
+  - plugin: buf.build/grpc-ecosystem/openapiv2:v2.19.0
+    out: gen

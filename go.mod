@@ -3,6 +3,7 @@ module github.com/andrewvo148/pkg
 go 1.21.4
 
 require (
+	github.com/go-chi/chi v1.5.5
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	go.uber.org/zap v1.26.0
 	go.uber.org/zap/exp v0.2.0
