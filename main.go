@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/andrewvo148/pkg/web"
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
+	"github.com/andrewvo148/pkg/openapi"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 	r.Use(middleware.Recoverer)
 
 	// Serve static files from the embedded file system
-	r.Handle("/*", http.FileServer(http.FS(web.SwaggerUI)))
+	r.Handle("/*", http.FileServer(http.FS(openapi.SwaggerUI)))
 
 	// Start the server on port 5555
 	err := http.ListenAndServe(":5555", r)
