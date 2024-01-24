@@ -37,10 +37,167 @@
         "tags": [
           "Bookstore"
         ]
+      },
+      "post": {
+        "summary": "Creates a new shelf in the bookstore.",
+        "operationId": "Bookstore_CreateShelf",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Shelf"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "The shelf resource to create",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Shelf"
+            }
+          }
+        ],
+        "tags": [
+          "Bookstore"
+        ]
+      }
+    },
+    "/v1/shelves/{shelf}": {
+      "get": {
+        "summary": "Returns a specific bookstore shelf.",
+        "operationId": "Bookstore_GetShelf",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Shelf"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "The ID of the self resource to retrieve.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Bookstore"
+        ]
+      },
+      "delete": {
+        "summary": "Deletes a shelf, including all books that are stored on the shelf.",
+        "operationId": "Bookstore_DeleteShelf",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "The ID of the self resource to delete.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Bookstore"
+        ]
+      }
+    },
+    "/v1/shelves/{shelf}/books": {
+      "post": {
+        "summary": "Creates a new book.",
+        "operationId": "Bookstore_CreateBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "The ID of the shelf on which to create a book.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "book",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        ],
+        "tags": [
+          "Bookstore"
+        ]
       }
     }
   },
   "definitions": {
+    "Book": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "description": "A unique book id."
+        },
+        "author": {
+          "type": "string",
+          "description": "An author of the book."
+        },
+        "title": {
+          "type": "string",
+          "description": "A book tilte."
+        }
+      },
+      "title": "A book resource"
+    },
     "ListShelvesResponse": {
       "type": "object",
       "properties": {

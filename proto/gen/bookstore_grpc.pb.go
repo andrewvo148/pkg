@@ -27,7 +27,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Bookstore_ListSelves_FullMethodName = "/Bookstore/ListSelves"
+	Bookstore_ListSelves_FullMethodName  = "/Bookstore/ListSelves"
+	Bookstore_CreateShelf_FullMethodName = "/Bookstore/CreateShelf"
+	Bookstore_GetShelf_FullMethodName    = "/Bookstore/GetShelf"
+	Bookstore_DeleteShelf_FullMethodName = "/Bookstore/DeleteShelf"
+	Bookstore_CreateBook_FullMethodName  = "/Bookstore/CreateBook"
 )
 
 // BookstoreClient is the client API for Bookstore service.
@@ -36,6 +40,14 @@ const (
 type BookstoreClient interface {
 	// Return a list of all selves in the bookstore
 	ListSelves(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListShelvesResponse, error)
+	// Creates a new shelf in the bookstore.
+	CreateShelf(ctx context.Context, in *CreateShelfRequest, opts ...grpc.CallOption) (*Shelf, error)
+	// Returns a specific bookstore shelf.
+	GetShelf(ctx context.Context, in *GetShelfRequest, opts ...grpc.CallOption) (*Shelf, error)
+	// Deletes a shelf, including all books that are stored on the shelf.
+	DeleteShelf(ctx context.Context, in *DeleteShelfRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Creates a new book.
+	CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*Book, error)
 }
 
 type bookstoreClient struct {
@@ -55,12 +67,56 @@ func (c *bookstoreClient) ListSelves(ctx context.Context, in *emptypb.Empty, opt
 	return out, nil
 }
 
+func (c *bookstoreClient) CreateShelf(ctx context.Context, in *CreateShelfRequest, opts ...grpc.CallOption) (*Shelf, error) {
+	out := new(Shelf)
+	err := c.cc.Invoke(ctx, Bookstore_CreateShelf_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookstoreClient) GetShelf(ctx context.Context, in *GetShelfRequest, opts ...grpc.CallOption) (*Shelf, error) {
+	out := new(Shelf)
+	err := c.cc.Invoke(ctx, Bookstore_GetShelf_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookstoreClient) DeleteShelf(ctx context.Context, in *DeleteShelfRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Bookstore_DeleteShelf_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookstoreClient) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*Book, error) {
+	out := new(Book)
+	err := c.cc.Invoke(ctx, Bookstore_CreateBook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookstoreServer is the server API for Bookstore service.
 // All implementations must embed UnimplementedBookstoreServer
 // for forward compatibility
 type BookstoreServer interface {
 	// Return a list of all selves in the bookstore
 	ListSelves(context.Context, *emptypb.Empty) (*ListShelvesResponse, error)
+	// Creates a new shelf in the bookstore.
+	CreateShelf(context.Context, *CreateShelfRequest) (*Shelf, error)
+	// Returns a specific bookstore shelf.
+	GetShelf(context.Context, *GetShelfRequest) (*Shelf, error)
+	// Deletes a shelf, including all books that are stored on the shelf.
+	DeleteShelf(context.Context, *DeleteShelfRequest) (*emptypb.Empty, error)
+	// Creates a new book.
+	CreateBook(context.Context, *CreateBookRequest) (*Book, error)
 	mustEmbedUnimplementedBookstoreServer()
 }
 
@@ -70,6 +126,18 @@ type UnimplementedBookstoreServer struct {
 
 func (UnimplementedBookstoreServer) ListSelves(context.Context, *emptypb.Empty) (*ListShelvesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSelves not implemented")
+}
+func (UnimplementedBookstoreServer) CreateShelf(context.Context, *CreateShelfRequest) (*Shelf, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateShelf not implemented")
+}
+func (UnimplementedBookstoreServer) GetShelf(context.Context, *GetShelfRequest) (*Shelf, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetShelf not implemented")
+}
+func (UnimplementedBookstoreServer) DeleteShelf(context.Context, *DeleteShelfRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteShelf not implemented")
+}
+func (UnimplementedBookstoreServer) CreateBook(context.Context, *CreateBookRequest) (*Book, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBook not implemented")
 }
 func (UnimplementedBookstoreServer) mustEmbedUnimplementedBookstoreServer() {}
 
@@ -102,6 +170,78 @@ func _Bookstore_ListSelves_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookstore_CreateShelf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateShelfRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookstoreServer).CreateShelf(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookstore_CreateShelf_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookstoreServer).CreateShelf(ctx, req.(*CreateShelfRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookstore_GetShelf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetShelfRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookstoreServer).GetShelf(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookstore_GetShelf_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookstoreServer).GetShelf(ctx, req.(*GetShelfRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookstore_DeleteShelf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteShelfRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookstoreServer).DeleteShelf(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookstore_DeleteShelf_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookstoreServer).DeleteShelf(ctx, req.(*DeleteShelfRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookstore_CreateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookstoreServer).CreateBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookstore_CreateBook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookstoreServer).CreateBook(ctx, req.(*CreateBookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Bookstore_ServiceDesc is the grpc.ServiceDesc for Bookstore service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -112,6 +252,22 @@ var Bookstore_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSelves",
 			Handler:    _Bookstore_ListSelves_Handler,
+		},
+		{
+			MethodName: "CreateShelf",
+			Handler:    _Bookstore_CreateShelf_Handler,
+		},
+		{
+			MethodName: "GetShelf",
+			Handler:    _Bookstore_GetShelf_Handler,
+		},
+		{
+			MethodName: "DeleteShelf",
+			Handler:    _Bookstore_DeleteShelf_Handler,
+		},
+		{
+			MethodName: "CreateBook",
+			Handler:    _Bookstore_CreateBook_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

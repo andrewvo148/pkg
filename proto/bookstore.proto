@@ -22,6 +22,35 @@ service Bookstore {
         // curl http://DOMAIN_NAME/v1/shelves
         option (google.api.http) = { get: "/v1/shelves" };
     }
+    // Creates a new shelf in the bookstore.
+    rpc CreateShelf(CreateShelfRequest) returns (Shelf) {
+        // Client example:
+        // curl -d '{"theme": "Music"}' http://DOMAIN_NAME/v1/shelves
+        option (google.api.http) = {
+            post: "/v1/shelves"
+            body: "shelf"
+        };
+    }
+    // Returns a specific bookstore shelf.
+    rpc GetShelf(GetShelfRequest) returns (Shelf) {
+        // Client example - returns the first shelf:
+        // curl http://DOMAIN_NAME/v1/shelves/1
+        option (google.api.http) = { get : "/v1/shelves/{shelf}" };
+    }
+    // Deletes a shelf, including all books that are stored on the shelf.
+    rpc DeleteShelf(DeleteShelfRequest) returns (google.protobuf.Empty) {
+        // Client example - delete the second shelf:
+        // curl -X DELETE http://DOMAIN_NAME/v1/shelves/2
+        option (google.api.http) = { delete: "/v1/shelves/{shelf}" };
+    }
+    // Creates a new book.
+    rpc CreateBook(CreateBookRequest) returns (Book) {
+        option (google.api.http) = {
+            post: "/v1/shelves/{shelf}/books"
+            body: "book"
+        };
+    }
+
 }
 
 message Shelf {
@@ -31,8 +60,42 @@ message Shelf {
     string theme = 2;
 }
 
+// A book resource
+message Book {
+    // A unique book id.
+    int64 id = 1;
+    // An author of the book.
+    string author = 2;
+    // A book tilte.
+    string title = 3;
+}
+
 // Response to ListShelves call.
 message ListShelvesResponse {
     // Shelves in the bookstore.
     repeated Shelf shelves = 1;
+}
+
+// Request message for CreateShelf method.
+message CreateShelfRequest {
+    // The shelf resource to create
+    Shelf shelf = 1;
+}
+
+// Request message for GetShelf method.
+message GetShelfRequest {
+    // The ID of the self resource to retrieve.
+    int64 shelf = 1;
+}
+// Request message for DeleteShelf method.
+message DeleteShelfRequest {
+    // The ID of the self resource to delete.
+    int64 shelf = 1;
+}
+
+// Request message for CreateBook method.
+message CreateBookRequest {
+    // The ID of the shelf on which to create a book.
+    int64 shelf = 1;
+    Book book = 2;
 }
