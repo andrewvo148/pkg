@@ -4,6 +4,7 @@ go 1.21.4
 
 require (
 	github.com/go-chi/chi/v5 v5.0.11
+	github.com/go-chi/render v1.0.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	go.uber.org/zap v1.26.0
@@ -16,6 +17,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/ajg/form v1.5.1 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
