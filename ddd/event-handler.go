@@ -1,4 +1,5 @@
-package eventsourcing
+package ddd
 
 type EventHandler interface {
+	
 }

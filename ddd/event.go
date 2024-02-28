@@ -1,4 +1,4 @@
-package eventsourcing
+package ddd
 
 import "time"
 
