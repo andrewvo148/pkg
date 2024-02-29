@@ -2,14 +2,15 @@ package jetstream
 
 import (
 	"context"
-	"github.com/andrewvo148/pkg/log"
+	"log/slog"
+
 	"github.com/nats-io/nats.go"
 )
 
 const maxRetries = 5
 
 type Stream struct {
-	logger log.Logger
+	logger *slog.Logger
 	js     nats.JetStream
 }
 

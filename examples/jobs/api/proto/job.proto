@@ -1,0 +1,123 @@
+
+syntax = "proto3";
+
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/api/field_behavior.proto";
+
+// A simple Bookstore API.
+//
+// The API manages shelves and books resources. Shelves contain books.
+service Jobs {
+ 
+    rpc ListCompanies(CreateCompanyRequest) returns (Company) {
+        option (google.api.http) = {
+            post: "/v1/companies"
+            body: "company"
+        };
+    }
+
+    // Creates a new book.
+    rpc CreateCompany(CreateCompanyRequest) returns (Company) {
+        option (google.api.http) = {
+            post: "/v1/companies"
+            body: "company"
+        };
+    }
+
+
+    
+
+
+       // Return a list of all selves in the bookstore
+       rpc ListJobs(google.protobuf.Empty) returns (ListJobsResponse) {
+        // Define HTTP mapping
+        // Client example (Assuming your service is hosted at the given 'DOMAIN_NAME'):
+        // curl http://DOMAIN_NAME/v1/shelves
+        option (google.api.http) = { get: "/v1/jobs" };
+    }
+    // Creates a new shelf in the bookstore.
+    rpc CreateJob(CreateJobRequest) returns (Job) {
+        // Client example:
+        // curl -d '{"theme": "Music"}' http://DOMAIN_NAME/v1/shelves
+        option (google.api.http) = {
+            post: "/v1/jobs"
+            body: "job"
+        };
+    }
+    // Returns a specific bookstore shelf.
+    rpc GetJob(GetJobRequest) returns (Job) {
+        // Client example - returns the first shelf:
+        // curl http://DOMAIN_NAME/v1/shelves/1
+        option (google.api.http) = { get : "/v1/jobs/{job}" };
+    }
+    // Deletes a shelf, including all books that are stored on the shelf.
+    rpc DeleteJob(DeleteJobRequest) returns (google.protobuf.Empty) {
+        // Client example - delete the second shelf:
+        // curl -X DELETE http://DOMAIN_NAME/v1/shelves/2
+        option (google.api.http) = { delete: "/v1/shelves/{job}" };
+    }
+    
+
+}
+
+message Job {
+    // A job id
+    int64 id = 1;
+    string title = 2;
+    string description = 3;
+}
+
+// A book resource
+message Company {
+    int64 id = 1;
+    // A book tilte.
+    string name = 3;
+    
+}
+
+
+// Response to ListShelves call.
+message ListJobsRequest {
+    int32 page_size = 1 [(google.api.field_behavior) = OPTIONAL];
+    string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+
+}
+
+// Response to ListShelves call.
+message ListJobsResponse {
+    // Shelves in the bookstore.
+    repeated Job jobs = 1;
+    string page_token = 2;
+}
+
+// Request message for CreateShelf method.
+message CreateJobRequest {
+    // The shelf resource to create
+    Job job = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for GetShelf method.
+message GetJobRequest {
+    // The ID of the self resource to retrieve.
+    int64 job = 1;
+}
+// Request message for DeleteShelf method.
+message DeleteJobRequest {
+    // The ID of the self resource to delete.
+    int64 job = 1;
+}
+
+// Request message for CreateBook method.
+message CreateCompanyRequest {
+    // The ID of the shelf on which to create a book.
+    Company company = 1;
+}
+
+
+// Request message for CreateBook method.
+message CreateCompanyResponse {
+    // The ID of the shelf on which to create a book.
+    Company company = 1;
+}
