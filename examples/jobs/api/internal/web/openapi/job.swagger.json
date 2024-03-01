@@ -18,6 +18,7 @@
   "paths": {
     "/v1/companies": {
       "get": {
+        "summary": "List the companies",
         "operationId": "Jobs_ListCompanies",
         "responses": {
           "200": {
@@ -53,7 +54,7 @@
         ]
       },
       "post": {
-        "summary": "Creates a new book.",
+        "summary": "Creates a new company.",
         "operationId": "Jobs_CreateCompany",
         "responses": {
           "200": {
@@ -85,9 +86,42 @@
         ]
       }
     },
-    "/v1/jobs": {
+    "/v1/companies/{company}": {
+      "delete": {
+        "summary": "Deletes a company, including all jobs that are in the company.",
+        "operationId": "Jobs_DeleteCompany",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Jobs"
+        ]
+      }
+    },
+    "/v1/companies/{company}/jobs": {
       "get": {
-        "summary": "Return a list of all selves in the bookstore",
+        "summary": "Return a list of all jobs of a company",
         "operationId": "Jobs_ListJobs",
         "responses": {
           "200": {
@@ -103,12 +137,35 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "company",
+            "description": "ID of the company which jobs to list.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageToken",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
         "tags": [
           "Jobs"
         ]
       },
       "post": {
-        "summary": "Creates a new shelf in the bookstore.",
+        "summary": "Creates a new job of the company.",
         "operationId": "Jobs_CreateJob",
         "responses": {
           "200": {
@@ -126,8 +183,16 @@
         },
         "parameters": [
           {
+            "name": "company",
+            "description": "The ID of the company on which to create a job",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
             "name": "job",
-            "description": "The shelf resource to create",
+            "description": "The job resource to create",
             "in": "body",
             "required": true,
             "schema": {
@@ -143,9 +208,9 @@
         ]
       }
     },
-    "/v1/jobs/{job}": {
+    "/v1/companies/{company}/jobs/{job}": {
       "get": {
-        "summary": "Returns a specific bookstore shelf.",
+        "summary": "Returns a specific job.",
         "operationId": "Jobs_GetJob",
         "responses": {
           "200": {
@@ -163,8 +228,16 @@
         },
         "parameters": [
           {
+            "name": "company",
+            "description": "The ID of the company from which to retrieve a job.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
             "name": "job",
-            "description": "The ID of the self resource to retrieve.",
+            "description": "The ID of the job to retrieve.",
             "in": "path",
             "required": true,
             "type": "string",
@@ -174,11 +247,9 @@
         "tags": [
           "Jobs"
         ]
-      }
-    },
-    "/v1/shelves/{job}": {
+      },
       "delete": {
-        "summary": "Deletes a shelf, including all books that are stored on the shelf.",
+        "summary": "Deletes a job from a company.",
         "operationId": "Jobs_DeleteJob",
         "responses": {
           "200": {
@@ -197,8 +268,16 @@
         },
         "parameters": [
           {
+            "name": "company",
+            "description": "The ID of the company on which to delete a job",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
             "name": "job",
-            "description": "The ID of the self resource to delete.",
+            "description": "The ID of the job to delete",
             "in": "path",
             "required": true,
             "type": "string",
@@ -224,7 +303,7 @@
           "description": "A book tilte."
         }
       },
-      "title": "A book resource"
+      "title": "A Company resource"
     },
     "Job": {
       "type": "object",
@@ -240,7 +319,8 @@
         "description": {
           "type": "string"
         }
-      }
+      },
+      "title": "A Job resource"
     },
     "ListCompaniesResponse": {
       "type": "object",
@@ -257,7 +337,7 @@
           "type": "string"
         }
       },
-      "description": "Response to ListShelves call."
+      "description": "Response to ListCompanies call."
     },
     "ListJobsResponse": {
       "type": "object",

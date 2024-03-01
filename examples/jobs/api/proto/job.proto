@@ -19,7 +19,7 @@ service Jobs {
         };
     }
 
-    // Creates a new book.
+    // Creates a new company.
     rpc CreateCompany(CreateCompanyRequest) returns (Company) {
         option (google.api.http) = {
             post: "/v1/companies"
@@ -28,7 +28,7 @@ service Jobs {
     }
 
 
-    // Deletes a shelf, including all books that are stored on the shelf.
+    // Deletes a company, including all jobs that are in the company.
     rpc DeleteCompany(DeleteCompanyRequest) returns (google.protobuf.Empty) {
         // Client example - delete the second shelf:
         // curl -X DELETE http://DOMAIN_NAME/v1/companies/2
@@ -42,31 +42,35 @@ service Jobs {
         // curl http://DOMAIN_NAME/v1/shelves
         option (google.api.http) = { get: "/v1/companies/{company}/jobs" };
     }
-    // Creates a new shelf in the bookstore.
+
+    // Creates a new job of the company.
     rpc CreateJob(CreateJobRequest) returns (Job) {
         // Client example:
         // curl -d '{"theme": "Music"}' http://DOMAIN_NAME/v1/shelves
         option (google.api.http) = {
-            post: "/v1/jobs"
+            post: "/v1/companies/{company}/jobs"
             body: "job"
         };
     }
-    // Returns a specific bookstore shelf.
+    // Returns a specific job.
     rpc GetJob(GetJobRequest) returns (Job) {
         // Client example - returns the first shelf:
         // curl http://DOMAIN_NAME/v1/shelves/1
-        option (google.api.http) = { get : "/v1/jobs/{job}" };
+        option (google.api.http) = { get : "/v1/companies/{company}/jobs/{job}" };
     }
-    // Deletes a shelf, including all books that are stored on the shelf.
+
+    // Deletes a job from a company.
     rpc DeleteJob(DeleteJobRequest) returns (google.protobuf.Empty) {
         // Client example - delete the second shelf:
         // curl -X DELETE http://DOMAIN_NAME/v1/shelves/2
-        option (google.api.http) = { delete: "/v1/shelves/{job}" };
+        option (google.api.http) = { delete: "/v1/companies/{company}/jobs/{job}" };
     }
     
 
 }
 
+
+// A Job resource
 message Job {
     // A job id
     int64 id = 1;
@@ -74,7 +78,7 @@ message Job {
     string description = 3;
 }
 
-// A book resource
+// A Company resource
 message Company {
     int64 id = 1;
     // A book tilte.
@@ -82,23 +86,38 @@ message Company {
     
 }
 
+// Request message for ListCompanies method.
 message ListCompaniesRequest {
     int32 page_size = 1 [(google.api.field_behavior) = OPTIONAL];
     string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
-// Response to ListShelves call.
+// Response to ListCompanies call.
 message ListCompaniesResponse {
     // Shelves in the bookstore.
     repeated Company companies = 1;
     string page_token = 2;
 }
 
+// Request message for CreatCompany method.
+message CreateCompanyRequest {
+    // The ID of the shelf on which to create a book.
+    Company company = 1;
+}
+
+
+// Response message for CreateCompany call.
+message CreateCompanyResponse {
+    // The ID of the shelf on which to create a book.
+    Company company = 1;
+}
+
+
 message DeleteCompanyRequest {
     int64 company = 1;
 }
 
-// Response to ListShelves call.
+// Request message for ListJobs method.
 message ListJobsRequest {
     // ID of the company which jobs to list.
     int64 company = 1;
@@ -116,30 +135,27 @@ message ListJobsResponse {
 
 // Request message for CreateShelf method.
 message CreateJobRequest {
-    // The shelf resource to create
-    Job job = 1 [(google.api.field_behavior) = REQUIRED];
+    // The ID of the company on which to create a job
+    int64 company = 1 [(google.api.field_behavior) = REQUIRED];
+    // The job resource to create
+    Job job = 2 [(google.api.field_behavior) = REQUIRED];
 }
+
+
 
 // Request message for GetShelf method.
 message GetJobRequest {
-    // The ID of the self resource to retrieve.
-    int64 job = 1;
+    // The ID of the company from which to retrieve a job.
+    int64 company = 1;
+    // The ID of the job to retrieve.
+    int64 job = 2;
 }
-// Request message for DeleteShelf method.
+
+// Request message for DeleteJob method.
 message DeleteJobRequest {
-    // The ID of the self resource to delete.
-    int64 job = 1;
+    // The ID of the company on which to delete a job
+    int64 company = 1 [(google.api.field_behavior) = REQUIRED];
+    // The ID of the job to delete 
+    int64 job = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Request message for CreateBook method.
-message CreateCompanyRequest {
-    // The ID of the shelf on which to create a book.
-    Company company = 1;
-}
-
-
-// Request message for CreateBook method.
-message CreateCompanyResponse {
-    // The ID of the shelf on which to create a book.
-    Company company = 1;
-}
