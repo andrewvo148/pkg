@@ -6,15 +6,16 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/api/field_behavior.proto";
 
-// A simple Bookstore API.
+// A simple Jobs API.
 //
-// The API manages shelves and books resources. Shelves contain books.
+// The API manages jobs and companies resources. companies contain jobs.
 service Jobs {
- 
-    rpc ListCompanies(CreateCompanyRequest) returns (Company) {
+
+    // List the companies
+    rpc ListCompanies(ListCompaniesRequest) returns (ListCompaniesResponse) {
+        // curl http://DOMAIN_NAME/v1/companies
         option (google.api.http) = {
-            post: "/v1/companies"
-            body: "company"
+            get: "/v1/companies"
         };
     }
 
@@ -27,15 +28,19 @@ service Jobs {
     }
 
 
-    
+    // Deletes a shelf, including all books that are stored on the shelf.
+    rpc DeleteCompany(DeleteCompanyRequest) returns (google.protobuf.Empty) {
+        // Client example - delete the second shelf:
+        // curl -X DELETE http://DOMAIN_NAME/v1/companies/2
+        option (google.api.http) = { delete: "/v1/companies/{company}" };
+    }
 
-
-       // Return a list of all selves in the bookstore
-       rpc ListJobs(google.protobuf.Empty) returns (ListJobsResponse) {
+    // Return a list of all jobs of a company
+       rpc ListJobs(ListJobsRequest) returns (ListJobsResponse) {
         // Define HTTP mapping
         // Client example (Assuming your service is hosted at the given 'DOMAIN_NAME'):
         // curl http://DOMAIN_NAME/v1/shelves
-        option (google.api.http) = { get: "/v1/jobs" };
+        option (google.api.http) = { get: "/v1/companies/{company}/jobs" };
     }
     // Creates a new shelf in the bookstore.
     rpc CreateJob(CreateJobRequest) returns (Job) {
@@ -77,11 +82,28 @@ message Company {
     
 }
 
+message ListCompaniesRequest {
+    int32 page_size = 1 [(google.api.field_behavior) = OPTIONAL];
+    string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response to ListShelves call.
+message ListCompaniesResponse {
+    // Shelves in the bookstore.
+    repeated Company companies = 1;
+    string page_token = 2;
+}
+
+message DeleteCompanyRequest {
+    int64 company = 1;
+}
 
 // Response to ListShelves call.
 message ListJobsRequest {
-    int32 page_size = 1 [(google.api.field_behavior) = OPTIONAL];
-    string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+    // ID of the company which jobs to list.
+    int64 company = 1;
+    int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+    string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 
 }
 

@@ -17,6 +17,41 @@
   ],
   "paths": {
     "/v1/companies": {
+      "get": {
+        "operationId": "Jobs_ListCompanies",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListCompaniesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageToken",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Jobs"
+        ]
+      },
       "post": {
         "summary": "Creates a new book.",
         "operationId": "Jobs_CreateCompany",
@@ -206,6 +241,23 @@
           "type": "string"
         }
       }
+    },
+    "ListCompaniesResponse": {
+      "type": "object",
+      "properties": {
+        "companies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Company"
+          },
+          "description": "Shelves in the bookstore."
+        },
+        "pageToken": {
+          "type": "string"
+        }
+      },
+      "description": "Response to ListShelves call."
     },
     "ListJobsResponse": {
       "type": "object",

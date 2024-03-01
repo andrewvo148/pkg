@@ -20,17 +20,21 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Jobs_ListCompanies_FullMethodName = "/Jobs/ListCompanies"
+	Jobs_CreateCompany_FullMethodName = "/Jobs/CreateCompany"
 	Jobs_ListJobs_FullMethodName      = "/Jobs/ListJobs"
 	Jobs_CreateJob_FullMethodName     = "/Jobs/CreateJob"
 	Jobs_GetJob_FullMethodName        = "/Jobs/GetJob"
 	Jobs_DeleteJob_FullMethodName     = "/Jobs/DeleteJob"
-	Jobs_CreateCompany_FullMethodName = "/Jobs/CreateCompany"
 )
 
 // JobsClient is the client API for Jobs service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type JobsClient interface {
+	ListCompanies(ctx context.Context, in *ListCompaniesRequest, opts ...grpc.CallOption) (*ListCompaniesResponse, error)
+	// Creates a new book.
+	CreateCompany(ctx context.Context, in *CreateCompanyRequest, opts ...grpc.CallOption) (*Company, error)
 	// Return a list of all selves in the bookstore
 	ListJobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListJobsResponse, error)
 	// Creates a new shelf in the bookstore.
@@ -39,8 +43,6 @@ type JobsClient interface {
 	GetJob(ctx context.Context, in *GetJobRequest, opts ...grpc.CallOption) (*Job, error)
 	// Deletes a shelf, including all books that are stored on the shelf.
 	DeleteJob(ctx context.Context, in *DeleteJobRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Creates a new book.
-	CreateCompany(ctx context.Context, in *CreateCompanyRequest, opts ...grpc.CallOption) (*Company, error)
 }
 
 type jobsClient struct {
@@ -49,6 +51,24 @@ type jobsClient struct {
 
 func NewJobsClient(cc grpc.ClientConnInterface) JobsClient {
 	return &jobsClient{cc}
+}
+
+func (c *jobsClient) ListCompanies(ctx context.Context, in *ListCompaniesRequest, opts ...grpc.CallOption) (*ListCompaniesResponse, error) {
+	out := new(ListCompaniesResponse)
+	err := c.cc.Invoke(ctx, Jobs_ListCompanies_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *jobsClient) CreateCompany(ctx context.Context, in *CreateCompanyRequest, opts ...grpc.CallOption) (*Company, error) {
+	out := new(Company)
+	err := c.cc.Invoke(ctx, Jobs_CreateCompany_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *jobsClient) ListJobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListJobsResponse, error) {
@@ -87,19 +107,13 @@ func (c *jobsClient) DeleteJob(ctx context.Context, in *DeleteJobRequest, opts .
 	return out, nil
 }
 
-func (c *jobsClient) CreateCompany(ctx context.Context, in *CreateCompanyRequest, opts ...grpc.CallOption) (*Company, error) {
-	out := new(Company)
-	err := c.cc.Invoke(ctx, Jobs_CreateCompany_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // JobsServer is the server API for Jobs service.
 // All implementations must embed UnimplementedJobsServer
 // for forward compatibility
 type JobsServer interface {
+	ListCompanies(context.Context, *ListCompaniesRequest) (*ListCompaniesResponse, error)
+	// Creates a new book.
+	CreateCompany(context.Context, *CreateCompanyRequest) (*Company, error)
 	// Return a list of all selves in the bookstore
 	ListJobs(context.Context, *emptypb.Empty) (*ListJobsResponse, error)
 	// Creates a new shelf in the bookstore.
@@ -108,8 +122,6 @@ type JobsServer interface {
 	GetJob(context.Context, *GetJobRequest) (*Job, error)
 	// Deletes a shelf, including all books that are stored on the shelf.
 	DeleteJob(context.Context, *DeleteJobRequest) (*emptypb.Empty, error)
-	// Creates a new book.
-	CreateCompany(context.Context, *CreateCompanyRequest) (*Company, error)
 	mustEmbedUnimplementedJobsServer()
 }
 
@@ -117,6 +129,12 @@ type JobsServer interface {
 type UnimplementedJobsServer struct {
 }
 
+func (UnimplementedJobsServer) ListCompanies(context.Context, *ListCompaniesRequest) (*ListCompaniesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListCompanies not implemented")
+}
+func (UnimplementedJobsServer) CreateCompany(context.Context, *CreateCompanyRequest) (*Company, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCompany not implemented")
+}
 func (UnimplementedJobsServer) ListJobs(context.Context, *emptypb.Empty) (*ListJobsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListJobs not implemented")
 }
@@ -129,9 +147,6 @@ func (UnimplementedJobsServer) GetJob(context.Context, *GetJobRequest) (*Job, er
 func (UnimplementedJobsServer) DeleteJob(context.Context, *DeleteJobRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteJob not implemented")
 }
-func (UnimplementedJobsServer) CreateCompany(context.Context, *CreateCompanyRequest) (*Company, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateCompany not implemented")
-}
 func (UnimplementedJobsServer) mustEmbedUnimplementedJobsServer() {}
 
 // UnsafeJobsServer may be embedded to opt out of forward compatibility for this service.
@@ -143,6 +158,42 @@ type UnsafeJobsServer interface {
 
 func RegisterJobsServer(s grpc.ServiceRegistrar, srv JobsServer) {
 	s.RegisterService(&Jobs_ServiceDesc, srv)
+}
+
+func _Jobs_ListCompanies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCompaniesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobsServer).ListCompanies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Jobs_ListCompanies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobsServer).ListCompanies(ctx, req.(*ListCompaniesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Jobs_CreateCompany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCompanyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobsServer).CreateCompany(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Jobs_CreateCompany_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobsServer).CreateCompany(ctx, req.(*CreateCompanyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Jobs_ListJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -217,24 +268,6 @@ func _Jobs_DeleteJob_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Jobs_CreateCompany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateCompanyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(JobsServer).CreateCompany(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Jobs_CreateCompany_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(JobsServer).CreateCompany(ctx, req.(*CreateCompanyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Jobs_ServiceDesc is the grpc.ServiceDesc for Jobs service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -242,6 +275,14 @@ var Jobs_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "Jobs",
 	HandlerType: (*JobsServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ListCompanies",
+			Handler:    _Jobs_ListCompanies_Handler,
+		},
+		{
+			MethodName: "CreateCompany",
+			Handler:    _Jobs_CreateCompany_Handler,
+		},
 		{
 			MethodName: "ListJobs",
 			Handler:    _Jobs_ListJobs_Handler,
@@ -257,10 +298,6 @@ var Jobs_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteJob",
 			Handler:    _Jobs_DeleteJob_Handler,
-		},
-		{
-			MethodName: "CreateCompany",
-			Handler:    _Jobs_CreateCompany_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

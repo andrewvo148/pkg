@@ -3,10 +3,10 @@ module github.com/andrewvo148/pkg
 go 1.21.4
 
 require (
-	github.com/go-chi/chi/v5 v5.0.11
 	github.com/go-chi/render v1.0.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
+	github.com/nats-io/nats.go v1.33.1
 	go.uber.org/zap v1.26.0
 	go.uber.org/zap/exp v0.2.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240102182953-50ed04b92917
@@ -21,7 +21,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/compress v1.17.2 // indirect
-	github.com/nats-io/nats.go v1.33.1 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
