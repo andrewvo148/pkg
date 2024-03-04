@@ -2,9 +2,10 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/andrewvo148/pkg/gen
+    default: andrewvo148/pkg/examples/jobs/api/gen
     except:
       - buf.build/googleapis/googleapis
+      - buf.build/grpc-ecosystem/grpc-gateway
 plugins:
   - plugin: buf.build/grpc-ecosystem/gateway:v2.19.0
     out: proto/gen

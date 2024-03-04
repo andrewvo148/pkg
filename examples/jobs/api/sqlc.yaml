@@ -5,8 +5,8 @@ sql:
       schema: "schema.sql"
       gen:
           go:
-              package: "tutorial"
-              out: "tutorial"
+              package: "postgresql"
+              out: "internal/postgresql"
               sql_package: "pgx/v5"
 overrides:
     go: null

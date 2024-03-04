@@ -1,0 +1,106 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hello World API",
+    "version": "1.0",
+    "contact": {
+      "name": "gRPC-Gateway project",
+      "email": "andrewvo148@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Greeter"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/example/echo": {
+      "post": {
+        "summary": "Sends a greeting",
+        "operationId": "Greeter_SayHello",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HelloReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1HelloRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Greeter"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1HelloReply": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "v1HelloRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

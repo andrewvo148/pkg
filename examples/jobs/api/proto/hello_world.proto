@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package hello.v1;
+
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -13,7 +15,8 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       url: "";
       email: "andrewvo148@gmail.com";
     }
-  }
+  };
+  schemes: HTTPS;
 };
 // The greeting service definition
 service Greeter {
