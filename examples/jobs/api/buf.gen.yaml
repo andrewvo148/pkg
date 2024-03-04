@@ -21,4 +21,4 @@ plugins:
     opt:
       - paths=source_relative
   - plugin: buf.build/grpc-ecosystem/openapiv2:v2.19.0
-    out: internal/web/openapi
+    out: third_party/OpenAPI

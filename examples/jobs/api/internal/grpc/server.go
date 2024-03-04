@@ -22,6 +22,7 @@ func RegisterServer(s grpc.ServiceRegistrar) error {
 }
 
 func (s server) ListCompanies(ctx context.Context, request *gen.ListCompaniesRequest) (resp *gen.ListCompaniesResponse, err error) {
+	request.filter.
 	return nil, status.Errorf(codes.Unimplemented, "method ListCompanies not implemented")
 }
 

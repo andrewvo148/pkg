@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "job.proto",
+    "title": "jobs/v1/job.proto",
     "version": "version not set"
   },
   "tags": [
@@ -35,6 +35,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
           {
             "name": "pageSize",
             "in": "query",

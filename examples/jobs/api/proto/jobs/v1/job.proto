@@ -88,8 +88,9 @@ message Company {
 
 // Request message for ListCompanies method.
 message ListCompaniesRequest {
-    int32 page_size = 1 [(google.api.field_behavior) = OPTIONAL];
-    string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+    string filter = 1 [(google.api.field_behavior) = OPTIONAL];
+    int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+    string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response to ListCompanies call.
