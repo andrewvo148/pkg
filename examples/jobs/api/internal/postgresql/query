@@ -1,3 +1,0 @@
--- name: GetAll :many
-SELECT
-FROM "jobs".company

@@ -1,0 +1,5 @@
+-- -- name: CreateJob :one
+-- INSERT INTO jobs.jobs (
+--     title, descrition
+-- ) VALUES ($1, $2)
+-- RETURNING *;

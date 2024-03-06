@@ -2,11 +2,12 @@ version: "2"
 sql:
     - engine: "postgresql"
       schema: "db/migrations"
+      queries: "internal/postgresql/query"    
       gen:
-          go:
-              package: "postgresql"
-              out: "internal/postgresql"
-              sql_package: "pgx/v5"
+        go:
+            package: "postgresql"
+            out: "internal/postgresql"
+            sql_package: "pgx/v5"  
 overrides:
     go: null
 plugins: []
