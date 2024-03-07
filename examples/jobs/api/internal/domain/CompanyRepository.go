@@ -1,8 +1,14 @@
 package domain
 
-import "context"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type CompanyRepo interface {
-	Save(ctx context.Context, Job *Job) error
-	Find(ctx context.Context, JobID uint64) (*Job, error)
+	GetAll(context.Context) ([]*Company, error)
+	GetByID(context.Context, uuid.UUID)
+	Create(context.Context, Company) error
+	Update(context.Context, Company) (*Company, error)
 }

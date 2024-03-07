@@ -12,16 +12,18 @@ import (
 
 type server struct {
 	gen.UnimplementedJobsServer
+	app Application
 }
 
 var _ gen.JobsServer = (*server)(nil)
 
-func RegisterServer(s grpc.ServiceRegistrar) error {
-	gen.RegisterJobsServer(s, server{})
+func RegisterServer(s grpc.ServiceRegistrar, app Application) error {
+	gen.RegisterJobsServer(s, server{app: app})
 	return nil
 }
 
 func (s *server) ListCompanies(ctx context.Context, request *gen.ListCompaniesRequest) (resp *gen.ListCompaniesResponse, err error) {
+
 	return nil, status.Errorf(codes.Unimplemented, "method ListCompanies not implemented")
 }
 
