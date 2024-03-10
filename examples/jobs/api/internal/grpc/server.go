@@ -1,9 +1,9 @@
 package grpc
 
 import (
-	"andrewvo148/pkg/examples/jobs/api/proto/gen"
+	"andrewvo148/pkg/examples/jobs/api/internal/application"
+	gen "andrewvo148/pkg/examples/jobs/api/proto/gen/jobs/v1"
 	"context"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -12,12 +12,12 @@ import (
 
 type server struct {
 	gen.UnimplementedJobsServer
-	app Application
+	app application.Application
 }
 
 var _ gen.JobsServer = (*server)(nil)
 
-func RegisterServer(s grpc.ServiceRegistrar, app Application) error {
+func RegisterServer(s grpc.ServiceRegistrar, app application.Application) error {
 	gen.RegisterJobsServer(s, server{app: app})
 	return nil
 }
@@ -47,6 +47,6 @@ func (s *server) GetJob(ctx context.Context, request *gen.GetJobRequest) (resp *
 	return nil, status.Errorf(codes.Unimplemented, "method GetJob not implemented")
 }
 
-func (s *server) DeleteJob(ctx context.Context, request *gen.DeleteJobRequest) (emptypb.Empty, err error) {
+func (s *server) DeleteJob(ctx context.Context, request *gen.DeleteJobRequest) (*emptypb.Empty, err error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteJob not implemented")
 }
