@@ -17,6 +17,6 @@ type Company struct {
 }
 
 func NewCompany(id string, title string, description string) *Company {
-	
+	return &Company{}
 }
 

@@ -1,6 +1,10 @@
 package domain
 
-import "context"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type JobRepo interface {
 	GetAll(context.Context) ([]*Job, error)

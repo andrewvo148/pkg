@@ -1,5 +1,13 @@
 package main
 
+import (
+	"andrewvo148/pkg/examples/jobs/api/internal/application"
+	"andrewvo148/pkg/examples/jobs/api/internal/domain"
+
+	"context"
+	"fmt"
+)
+
 //
 //type server struct {
 //	gen.UnimplementedGreeterServer
@@ -56,6 +64,25 @@ package main
 //	log.Fatalln(gwServer.ListenAndServe())
 //}
 
-func main() {
+type CustomHandler struct {
+	// Ha tang.
+	app application.Application
+}
 
+func (h *CustomHandler) Handle(ctx context.Context, event domain.Event) error {
+	fmt.Println(event.Name)
+	return nil
+}
+
+func main() {
+	de := domain.NewEventDispatcher()
+	fmt.Println(de)
+	handler := CustomHandler{}
+
+	err := de.Subscribe(handler, "event1")
+	if err != nil {
+		return
+	}
+
+	de.Publish(context.TODO(), domain.Event{Name: "event1"})
 }

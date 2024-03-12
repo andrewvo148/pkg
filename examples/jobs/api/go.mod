@@ -3,6 +3,7 @@ module andrewvo148/pkg/examples/jobs/api
 go 1.21.6
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
 	github.com/jackc/pgx/v5 v5.5.3
 	google.golang.org/genproto/googleapis/api v0.0.0-20240228224816-df926f6c8641
